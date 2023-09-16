@@ -9,10 +9,10 @@ public class Simple369 {
 	int b = number%10;
 	//10의 자리와 1의 자리 분리
 	int clap = 0; //clap 변수 초기화
-	if(a%3==0) {
+	if(a%3==0 & a>0) {
 		clap++;
 	} //10의자리가 3의 배수일 경우 clap값 1 증가
-	if(b%3==0) {
+	if(b%3==0 & b>0) {
 		clap++;
 	} //1의 자리가 3의 배수일 경우 clap값 1 증가
 	switch(clap) {
