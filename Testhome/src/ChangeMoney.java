@@ -5,7 +5,7 @@ public class ChangeMoney {
 		Scanner scanner = new Scanner(System.in); //scanner 객체 생성
 		int i; //변수 i 생성
 		int[] unit = {50000,10000,5000,1000,500,100,50,10,1}; //cash unit
-		int count [] = new int[9]; //원소가 7개인 배열 생성, 인덱스는 0~6까지 가능
+		int count [] = new int[unit.length]; //원소가 7개인 배열 생성, 인덱스는 0~6까지 가능
 
 		System.out.print("input price(won):"); //입력값을 물어보는 질문출력
 		int money = scanner.nextInt(); //입력값 저장
