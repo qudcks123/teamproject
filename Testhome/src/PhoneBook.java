@@ -1,6 +1,8 @@
 import java.util.Scanner; //import문 선언
 class Phone{ //Phone 클래스 생성
 	String name,number; //이름과 전화번호 변수 생성
+	public Phone() {
+	} //Phone Constructor 초기화
 	public Phone(String name,String number) { //Phone Constructor 생성
 		this.name = name; //setName
 		this.number = number; //setNumber
@@ -13,14 +15,14 @@ System.out.print("Number of Person>>"); //사람 수를 물어보는 문자 출�
 int person = scanner.nextInt(); //입력값 저장
 Phone [] c;//Phone 클래스의 객체를 저장할 수 있는 배열 c를 선언
 c = new Phone[person]; 
-// 배열 c의 크기를 person값으로 초기화
+// c를 Phone의 배열 크기인 person값으로 저장
 for(int i = 0; i< c.length ;i++) {//c의 길이만큼 for문 반복
 	System.out.print("Name and Phonenumber (ex. 홍길동 010-1234-5678) >> ");
 	//이름과 전화번호를 묻는 문자 출력
 	String name = scanner.next(); //처음오는 문자를 이름으로 저장
 	String number = scanner.next(); //두 번째 오는 문자를 전화번호로 저장
 	c[i] = new Phone(name, number);
-	// 입력값을 받아 Phone 클래스에 정의되어 있는 이름과 전화번호를 c배열에 저장
+	// 입력값을 받아 Phone 클래스에 정의되어 있는 이름과 전화번호를 배열 c에 저장
 }
 System.out.println("Store Done"); //이름과 전화번호를 모두 입력 받으면 문자 출력
 	for(int j = 0;  ; j++) { //계속해서 검색하는 이름을 받기 때문에 for(j)문 무한 반복
