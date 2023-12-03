@@ -17,7 +17,7 @@ public class Seat3 extends JFrame {
 	private JButton[] btnseat;
 	private JLabel intro, selectedseat1, selectedseat2, selectedseat3, selectedseat4; 
 	private JLabel[] row, selectedSeats;
-	private JButton retry, prior;
+	private JButton retry, prior, finish;
 	private int currentSeatIndex;
 	
 	public Seat3() {
@@ -33,6 +33,7 @@ public class Seat3 extends JFrame {
 	    currentSeatIndex = 0;
 	    retry = new JButton("좌석다시선택");
 	    prior = new JButton("이전단계");
+	    finish = new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG"));
 		btnseat = new JButton[NUM_SEATS];
 		row = new JLabel[NUM_SEATS/10];
 		createToolBarRight();
@@ -71,6 +72,7 @@ public class Seat3 extends JFrame {
 		righttoolBar.add(new JButton(new ImageIcon("ImageFiles/right.PNG")));
 		righttoolBar.addSeparator();
 		righttoolBar.add(new JLabel("좌석등급 / 가격"));
+		righttoolBar.add(new JLabel(new ImageIcon("ImageFiles/좌석타입.jpg")));
 		righttoolBar.add(new JLabel(new ImageIcon("ppt로 만들어야 하나?")));
 		righttoolBar.addSeparator();
 		righttoolBar.add(new JLabel("선택좌석"));
@@ -78,10 +80,13 @@ public class Seat3 extends JFrame {
 		righttoolBar.add(selectedseat2);
 		righttoolBar.add(selectedseat3);
 		righttoolBar.add(selectedseat4);
-		righttoolBar.add(new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG")));
+		righttoolBar.add(finish);
 		righttoolBar.add(prior);
 		righttoolBar.add(retry);
+						
 		retry.addActionListener(new retryActionListener());
+		finish.addActionListener(new finishActionListener());
+		
 		cp.add(righttoolBar,BorderLayout.EAST);
 	}
 
@@ -138,9 +143,6 @@ public class Seat3 extends JFrame {
                 selectedSeats[currentSeatIndex].setText(newText);
                 currentSeatIndex++;
             } // 모든 좌석이 갱신되면 더 이상의 갱신을 방지
-
-
-
         }
     }
 	
@@ -154,6 +156,15 @@ public class Seat3 extends JFrame {
             }
             // currentSeatIndex 초기화
             currentSeatIndex = 0;
+		}		
+	}
+	
+	private class finishActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			new Reserve();
 		}
 		
 	}
