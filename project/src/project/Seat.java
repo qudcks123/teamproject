@@ -6,7 +6,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class Seat extends JFrame {
-	final static int NUM_BUTTONS =12;
+	final static int NUM_BUTTONS =13;
 	final static int NUM_SEATS = 100;
 	private Container cp;
 	private JRadioButton[] seat = new JRadioButton[101];
@@ -73,7 +73,7 @@ public class Seat extends JFrame {
 		cp1.setBackground(Color.WHITE);
 		cp2.setBackground(Color.WHITE);
 		cp2a.setBackground(Color.WHITE);
-		cp3.setBackground(Color.GREEN);
+		cp3.setBackground(Color.WHITE);
 		
 		
 		cp1.setLayout(new BorderLayout());
@@ -150,10 +150,22 @@ public class Seat extends JFrame {
 		
 		cp2.add(cp2a, BorderLayout.CENTER);
 		
-	      for (int i = 0; i < NUM_BUTTONS; i++) 
+	      for (int i = 1; i < NUM_BUTTONS; i++) 
 	      {
-	          btn[i] = new JButton("00" + Integer.toString(i + 1));
+	          btn[i] = new JButton("00" + Integer.toString(i));
 	          cp3.add(btn[i]);
+	          if(i == 2 || i == 3 || i == 6 || i == 7 )
+	          {
+	        	  btn[i].setBackground(Color.CYAN);
+	          }
+	          else if(i == 1 || i == 4 || i == 5 || i == 8|| i == 10 || i == 11)
+	          {
+	        	  btn[i].setBackground(Color.GREEN);
+	          }
+	          else if(i == 9 || i == 12)
+	          {
+	        	  btn[i].setBackground(Color.GRAY);
+	          }
 	       }
 		
 		cp1.add(cp2,BorderLayout.NORTH);
