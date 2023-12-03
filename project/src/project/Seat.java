@@ -176,10 +176,6 @@ public class Seat extends JFrame {
         la1.setFont(largerFont1);
         
 		
-		//JLabel la2 = new JLabel("ㅁㅁ",new ImageIcon("ImageFiles/구역이미지.PNG"), JLabel.CENTER);
-        //la2.setHorizontalTextPosition(JLabel.CENTER);
-        //la2.setVerticalTextPosition(JLabel.CENTER);
-		//la2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel la3 = new JLabel("<html>구역 내 상단이 무대와 가까운 쪽입니다. <br> The upper end of the section is the closest area to the stage</html>");	
 		la3.setAlignmentX(Component.CENTER_ALIGNMENT); 		
 		
@@ -232,8 +228,12 @@ public class Seat extends JFrame {
 		
 	      for (int i = 1; i < NUM_BUTTONS; i++) 
 	      {
-	          btn[i] = new JButton("00" + Integer.toString(i));
+	    	  if(i<10) {
+	          btn[i] = new JButton("00" + i);
+	    	  }
+	    	  else btn[i] = new JButton("0" + i);
 	          cp3.add(btn[i]);
+	          btn[i].addActionListener(new btnActionListener());
 	          if(i == 2 || i == 3 || i == 6 || i == 7 )
 	          {
 	        	  btn[i].setBackground(Color.CYAN);
@@ -248,15 +248,24 @@ public class Seat extends JFrame {
 	          }
 	       }
 		
+	     
 		cp1.add(cp2,BorderLayout.NORTH);
 		cp1.add(cp3,BorderLayout.CENTER);
 		cp.add(cp1);
 	}
 	
+	public class btnActionListener implements ActionListener{
 
-	/*public static void main(String[] args) {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			new Seat3();
+		}		
+	}
+
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new Seat();
-	}*/
+	}
 
 }
