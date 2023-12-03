@@ -42,15 +42,13 @@ public class Cancel extends JFrame{
 	        frame.add(message);
 	        frame.add(canceltext);
 	        frame.add(button);
-	        frame.setLocationRelativeTo(null);
+	        frame.setLocation(430,300);
 	        frame.setSize(420, 150);
 			frame.setVisible(true);
 		}
-	public static void main(String[] args) {
-        new Cancel();
-       
+
     }  //Cancel 시뮬 
-}
+
 
 
 

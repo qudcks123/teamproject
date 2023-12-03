@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class Complete extends JFrame{
 	public Complete(String title, String completemessage, int ReserveNumber) {
+	
 			JFrame frame = new JFrame();
 	        frame.setTitle(title + "성공");
 	        

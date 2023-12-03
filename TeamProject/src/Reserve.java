@@ -14,12 +14,15 @@ public class Reserve extends JFrame {
     
 
     public Reserve() {
+    	 
     	Font font = new Font("고딕체", Font.BOLD, 13);
-
+    	JLabel Logo = new JLabel(new ImageIcon("images/예약로고.png"));
+        Logo.setBounds(0,0,595,419);
+        
     	Container c = getContentPane();
         setTitle("예매자 정보");
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 이거 있으면 아예 프로그램 종료
-        c.setBackground(Color.LIGHT_GRAY);
+        c.setBackground(new Color(248,246,233));
         setLayout(null);
 
         JLabel nameLabel = new JLabel("예매자 이름");
@@ -80,7 +83,7 @@ public class Reserve extends JFrame {
         add(emailLabel);
         add(emailtext);
         add(emailcombo);
-        
+        add(Logo);
         add(b);
         add(bb);
         
@@ -309,7 +312,7 @@ public class Reserve extends JFrame {
                     frame.setTitle("예약 확인");
                     frame.setSize(350, 300);            
                     Container contentPane = frame.getContentPane();
-                    contentPane.setBackground(Color.LIGHT_GRAY);
+                    contentPane.setBackground(new Color(248,246,233));
                     contentPane.setLayout(null);
                     frame.setForeground(Color.BLUE);
 
@@ -349,7 +352,7 @@ public class Reserve extends JFrame {
                     jc.setFont(font);
                     jc.setForeground(new Color(255,000,000));
     
-                    
+                    frame.setBackground(new Color(248,246,233));
                     frame.add(label1);
                     frame.add(label2);
                     frame.add(label3);
@@ -365,6 +368,7 @@ public class Reserve extends JFrame {
         	            	ReserveNumber++;
         	            	new Complete("예약","예약이 완료되었습니다.", ReserveNumber);
         	            	//예매정보값 저장
+        	            	
         	            }
         	            });
                     jc.addActionListener(new ActionListener() {
