@@ -19,6 +19,7 @@ public class Seat3 extends JFrame {
 	private JLabel[] row, selectedSeats;
 	private JButton retry, prior;
 	private int currentSeatIndex;
+	
 	public Seat3() {
 		setTitle("프방탄소년단 티켓");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -143,7 +144,7 @@ public class Seat3 extends JFrame {
         }
     }
 	
-	private class retryActionListener implements ActionListener{
+	public class retryActionListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {

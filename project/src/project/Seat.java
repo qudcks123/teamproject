@@ -3,7 +3,12 @@ package project;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import project.Seat3.retryActionListener;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Seat extends JFrame {
 	final static int NUM_BUTTONS =13;
@@ -11,11 +16,27 @@ public class Seat extends JFrame {
 	private Container cp;
 	private JRadioButton[] seat = new JRadioButton[101];
 	private JButton[] btn = new JButton[NUM_BUTTONS];
-
+	public String[] date;
+	public String [] time = {"14:30", "19:30", "--------"};
+	public JButton entire,retry, prior, finish;
 	public Seat() {
 		setTitle("프방탄소년단 티켓");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		cp = getContentPane();
+		date = new String[31];
+		
+		
+		for(int r =0; r<31; r++)
+		{	
+			if((r+1)% 7==4)
+				{
+					date[r] = new String("--------");
+					continue;
+				}
+			date[r] = new String("12월" +(r+1) +"일");			
+		} 
+		
+
 		
 		createToolBarRight();
 		createToolBarUpper();
@@ -29,18 +50,48 @@ public class Seat extends JFrame {
 		uppertoolBar.setFloatable(false);
 		uppertoolBar.setBackground(Color.LIGHT_GRAY);
 		
-		
 		uppertoolBar.add(new JLabel(new ImageIcon("ImageFiles/leftest.PNG")));
 		uppertoolBar.addSeparator();
 		uppertoolBar.add(new JLabel("프방탄소년단 2023 Concert in Seoul -서울 고척돔-"));
 		uppertoolBar.add(Box.createHorizontalStrut(10));
 		uppertoolBar.add(new JLabel("관람일자 선택:"));
-		uppertoolBar.add(new JComboBox<>(new String[]{"일자1", "일자2", "일자3"}));
+		Calendar calendar = new Calendar(); // Calendar 클래스의 인스턴스 생성
+        JComboBox<String> dateComboBox = new JComboBox<String>(date);
+        uppertoolBar.add(dateComboBox);
+        JComboBox<String> timeComboBox = new JComboBox<String>();
+        setInitialTimeOptions(timeComboBox);
+        
+        dateComboBox.addActionListener(e -> {
+            updateTimeComboBox(dateComboBox.getSelectedIndex(), timeComboBox);
+        });
+        
 		uppertoolBar.add(new JLabel("시간:"));
-		uppertoolBar.add(new JComboBox<>(new String[]{"시간1", "시간2", "시간3"}));
+		uppertoolBar.add(timeComboBox); // 받아서 하기 
 		
 		cp.add(uppertoolBar,BorderLayout.NORTH);
+		
 	}
+	
+    private void updateTimeComboBox(int selectedIndex, JComboBox<String> timeComboBox) {
+        timeComboBox.removeAllItems();
+        if ((selectedIndex + 1) % 7 == 4) {
+            timeComboBox.addItem("--------");
+        } else if ((selectedIndex + 1) % 7 == 2 || (selectedIndex + 1) % 7 == 3) {
+            timeComboBox.addItem("14:30");
+            timeComboBox.addItem("19:30");
+            timeComboBox.addItem("--------");
+        } else {
+            timeComboBox.addItem("--------");
+            timeComboBox.addItem("19:30");
+            timeComboBox.addItem("--------");
+        }
+    }
+    
+    private void setInitialTimeOptions(JComboBox<String> timeComboBox) {
+        for (String timeOption : time) {
+            timeComboBox.addItem(timeOption);
+        }
+    }
 	
 	private void createToolBarRight() {
 		JToolBar righttoolBar = new JToolBar();
@@ -48,21 +99,50 @@ public class Seat extends JFrame {
 		righttoolBar.setOrientation(SwingConstants.VERTICAL);
 		righttoolBar.setBackground(Color.LIGHT_GRAY);
 		
-		
-		
-		righttoolBar.add(new JButton(new ImageIcon("ImageFiles/right.PNG")));
+		entire = new JButton(new ImageIcon("ImageFiles/right.PNG"));
+		finish = new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG"));
+		prior = new JButton("이전단계");
+		retry = new JButton("좌석다시선택");
+		righttoolBar.add(entire);
 		righttoolBar.addSeparator();
 		righttoolBar.add(new JLabel("좌석등급 / 가격"));
 		righttoolBar.add(new JLabel(new ImageIcon("ppt로 만들어야 하나?")));
 		righttoolBar.addSeparator();
 		righttoolBar.add(new JLabel("선택좌석"));
 		righttoolBar.add(new JLabel());
-		righttoolBar.add(new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG")));
-		righttoolBar.add(new JButton("이전단계"));
-		righttoolBar.add(new JButton("좌석다시선택"));
+		righttoolBar.add(finish);
+		righttoolBar.add(prior);
+		righttoolBar.add(retry);
+		
+		finish.addActionListener(new finishActionListener());
+		prior.addActionListener(new priorActionListener());
+		//retry.addActionListener(new retryActionListener());
 		
 		cp.add(righttoolBar,BorderLayout.EAST);
 	}
+	
+	
+	
+	private class priorActionListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JButton b = (JButton) e.getSource();
+		}
+		
+	}
+	
+	private class finishActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JButton b = (JButton) e.getSource();
+		}
+		
+	}
+	
+	
 	
 	private void createSeatentire() {
 		JPanel cp1 = new JPanel();
@@ -97,8 +177,8 @@ public class Seat extends JFrame {
         
 		
 		//JLabel la2 = new JLabel("ㅁㅁ",new ImageIcon("ImageFiles/구역이미지.PNG"), JLabel.CENTER);
-	//	la2.setHorizontalTextPosition(JLabel.CENTER);
-	//	la2.setVerticalTextPosition(JLabel.CENTER);
+        //la2.setHorizontalTextPosition(JLabel.CENTER);
+        //la2.setVerticalTextPosition(JLabel.CENTER);
 		//la2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel la3 = new JLabel("<html>구역 내 상단이 무대와 가까운 쪽입니다. <br> The upper end of the section is the closest area to the stage</html>");	
 		la3.setAlignmentX(Component.CENTER_ALIGNMENT); 		
@@ -173,7 +253,6 @@ public class Seat extends JFrame {
 		cp.add(cp1);
 	}
 	
-
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
