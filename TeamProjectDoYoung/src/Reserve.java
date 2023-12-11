@@ -2,11 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.io.*;
 
-public class Reserve extends JFrame {
+public class Reserve extends JFrame implements Serializable{
 	static String Emailcombo;
-	static int ReserveNumber = 0;
-	
 	private String[] ecombo = {"","@gmail.com", "@naver.com", "@daum.net", "@seoultech.ac.kr", "(직접 입력)"};
 	//이메일 서버주소를 고를 수 있는 콤보박스 생성
     private JTextField name;
@@ -14,10 +13,18 @@ public class Reserve extends JFrame {
     private JTextField phone;
     private JTextField emailtext; //정보를 입력할 수 있는 텍스트필드 생성
     private JComboBox<String> emailcombo = new JComboBox<>(ecombo); //콤보박스에서 고른 서버를 문자열로 변경
-    static ArrayList<Store> r = new ArrayList<>(); //예매자 정보를 저장할 수 있는 ArrayList 생성
+    //예매자 정보를 저장할 수 있는 ArrayList 생성
+    static ArrayList<Integer> s = new ArrayList<Integer>();
+    static ArrayList<Store> r = Info.Information("seat");
+    static ArrayList<Store> d = Info.Information("InformSeat1");
+    static int ReserveNumber = 0;
     
     public Reserve() {
-    	 
+    	
+    	if (!r.isEmpty()) {
+    		if(!(r.get(r.size()-1).ReNum == 0))
+            	ReserveNumber = r.get(r.size()-1).ReNum;
+    	}
     	Font font = new Font("고딕체", Font.BOLD, 28); //기본글꼴생성
     	JLabel Logo = new JLabel(new ImageIcon("images/예약로고.png"));
         Logo.setBounds(0,0,595,419); //로고배치
@@ -82,12 +89,16 @@ public class Reserve extends JFrame {
         SeatLabel.setFont(font);
         SeatLabel.setForeground(new Color(051,051,102)); //메일주소 라벨 및 텍스트필드 배치
         
-        JLabel SeatNum = new JLabel(Integer.toString(Seat3.SeatNum) + "번");
-        SeatNum.setBounds(480, 300, 100, 30);
-        SeatNum.setFont(font);
-        SeatNum.setForeground(new Color(051,051,102));
+        for(int i = 0; i< Seat3.SeatNumArr.size();i++) {
+            JLabel SeatNum = new JLabel(Integer.toString(Seat3.SeatNumArr.get(i)));
+            SeatNum.setBounds(470+50*i, 300, 150, 30);
+            SeatNum.setFont(font);
+            SeatNum.setForeground(new Color(051,051,102));
+            add(SeatNum);
+            s.add(Seat3.SeatNumArr.get(i));
+        }
         
-        JButton b = new JButton("확인");
+       JButton b = new JButton("확인");
         b.setBounds(75, 350, 150, 50);
         b.setFont(font);
         b.setForeground(new Color(051,051,102)); //확인 버튼 배치
@@ -119,7 +130,6 @@ public class Reserve extends JFrame {
         add(AreaLabel);
         add(AreaNum);
         add(SeatLabel);
-        add(SeatNum);
         setSize(700, 450);
         setLocationRelativeTo(null);
         setVisible(true); //모든 Component 배치하고 띄우기
@@ -131,9 +141,9 @@ public class Reserve extends JFrame {
                     String selectedEmail = (String) emailcombo.getSelectedItem();
                     if (selectedEmail.equals("(직접 입력)")) {
                         JTextField emailField = new JTextField(15);
-                        emailField.setBounds(440, 240, 120, 30);
+                        emailField.setBounds(380, 240, 300, 50);
                         emailField.setHorizontalAlignment(JTextField.CENTER);
-
+                        emailField.setFont(font);
                         getContentPane().remove(emailcombo);
                         getContentPane().add(emailField);
                         
@@ -156,7 +166,6 @@ public class Reserve extends JFrame {
 
         b.addActionListener(new ActionListener() { //예매자 정보 확인 누르고 최종 확인 창 띄우기
             public void actionPerformed (ActionEvent e) {
-            	Font font = new Font("고딕체", Font.BOLD, 12);
             	String Name = name.getText();
                 String Birth = birth.getText();
                 String Phone = phone.getText();
@@ -167,8 +176,10 @@ public class Reserve extends JFrame {
                 if(Name.isEmpty() || Birth.isEmpty() || Phone.isEmpty()|| Email.isEmpty()|| Emailcombo.isEmpty()) {
                 	new ErrorMessage("모든 항목을 입력하세요.");
                 	fail++;
-                } else if (Emailcombo.contains("@")== false){
+                }
+                 else if (Emailcombo.contains("@")== false){
                 	new ErrorMessage("올바른 이메일 형식이 아닙니다.");
+                	fail++;
                 }
                 else{
                 
@@ -317,7 +328,7 @@ public class Reserve extends JFrame {
                     	   fail++;
                        }
             		   else if(((BirthYear == 2023) && (BirthDay > 14)) && (BirthDay < 32)) {
-            			   new ErrorMessage("그 날은 이미 종강입니다."); //이스터에그
+            			   new ErrorMessage("이미 종강한 날입니다."); //이스터에그
             			   fail++;
             		   }
             		  else if((BirthDay > 31) || (BirthDay < 0)) {
@@ -340,7 +351,15 @@ public class Reserve extends JFrame {
                    new ErrorMessage("생년월일과 휴대번호는 숫자로 입력해주세요.");
                    fail++;
                    
-               }//생년월일과 휴대번호가 숫자가 아닐경우 오류메세지 출력
+               }                //생년월일과 휴대번호가 숫자가 아닐경우 오류메세지 출력
+                for(int i = 0; i< r.size() ;i++) {
+                	if(Phone.equals(r.get(i).tel)) {
+                		new ErrorMessage("이미 등록되어 있는 정보입니다.");
+                		fail++;
+                		break;
+                	}
+                }
+                
                 if(fail == 0) { //fail 변수가 그대로 0일 경우 예약 최종 확인
              	   JFrame frame = new JFrame();
                     frame.setTitle("예약 확인");
@@ -401,9 +420,17 @@ public class Reserve extends JFrame {
         	            public void actionPerformed (ActionEvent e) {
         	            	frame.dispose();
         	            	ReserveNumber++;
-        	            	Store a = new Store(Name, Phone, Email ,Emailcombo, Birth, ReserveNumber);			
-        	    			r.add(a);
-        	            	new Complete("예약","예약이 완료되었습니다.", ReserveNumber);
+        	            	
+        	            	Store a = new Store(Name, Phone, Email ,Emailcombo, Birth, ReserveNumber);
+        	            	for(int i = s.size()-1; i >= 0 ;i--) {	
+        	            		r.add(a);
+        	            	}
+        	    			
+        	    			Info.Information(r, "seat");
+        	    			Info.Information(Seat3.s, "InformSeat1");
+        	            	new Complete("예약","예약이 완료되었습니다.", ReserveNumber, Seat.Areanum,s,Seat3.s);
+        	            	Seat3.SeatNumArr.clear();
+        	            	s.clear();
         	            	//확인 버튼 누르면 예약성공 메세지 출력
         	            }
         	            });
@@ -418,11 +445,11 @@ public class Reserve extends JFrame {
         });
     	}
 
-   /*
+  /*
     public static void main(String[] args) {
-    	new Complete("시뮬","테스트",0);
+    	new Complete("시뮬","예약이 완료되었습니다",0,Seat3.SeatNumArr);
     }
-    */
+    
     /*
     public static void main(String[] args) {
     	new Reserve();
@@ -430,9 +457,10 @@ public class Reserve extends JFrame {
     */
 } 
 
-class Complete extends JFrame{
-	public Complete(String title, String completemessage, int ReserveNumber) {
+class Complete extends JFrame implements Serializable{
+	public Complete(String title, String completemessage, int ReserveNumber, int selectedArea,ArrayList<Integer> selectedSeats,ArrayList<Store> StoreInfo) {
 		
+		int SeatPrice = 0;
 			JFrame frame = new JFrame();
 	        frame.setTitle(title + "성공");
 	        
@@ -446,33 +474,60 @@ class Complete extends JFrame{
 	        
 	        JLabel message = new JLabel(completemessage);	        
 	        message.setHorizontalAlignment(SwingConstants.CENTER);
-	        message.setBounds(140,30,300,40);
+	        message.setBounds(143,30,500,40);
 	        message.setFont(mfont);
 	        
 	   JLabel ReserveNum = new JLabel(title +"된 번호는 " + ReserveNumber + "번 입니다.");
-	   //예약을 성공하면 예비번호 출력
+	   //예약을 성공하면 예약번호 출력
 	   ReserveNum.setHorizontalAlignment(SwingConstants.CENTER);
-	   ReserveNum.setBounds(70,70,500,40);
+	   ReserveNum.setBounds(160,85,500,40);
 	   ReserveNum.setFont(mfont);
+	   int count = 0;
+	   String type = "";
+	   for(int i =0;i < StoreInfo.size();i++ ) {
+		   if(ReserveNumber == StoreInfo.get(i).ReNum) {
+			   type = StoreInfo.get(i).seattype;
+			   count++;
+		   }
+	   }
+	   		    if (type.equals("V")) {
+		        SeatPrice = 500000* count;
+		    } else if (type.equals("R")) {
+		        SeatPrice = 400000 *count;
+		    } else if (type.equals("S")) {
+		        SeatPrice = 300000* count;
+		    }
+				  
+	   
+		   
+	   
+	   JLabel Price = new JLabel(title + "된 좌석 총 가격은 " + SeatPrice + "원 입니다.");
+	   Price.setBounds(230, 140, 500, 30);
+	   Price.setFont(mfont);
+
 	   
 	   JLabel AreaLabel = new JLabel(title + "된 구역:");
-       AreaLabel.setBounds(20, 120, 180, 30);
+       AreaLabel.setBounds(100, 200, 180, 30);
        AreaLabel.setFont(mfont);
        
-       JLabel AreaNum = new JLabel(Seat.Areanum + "구역");
-       AreaNum.setBounds(180, 120, 180, 30);
+       JLabel AreaNum = new JLabel(selectedArea + "구역,");
+       AreaNum.setBounds(270, 200, 180, 30);
        AreaNum.setFont(mfont);
        
        JLabel SeatLabel = new JLabel(title + "된 좌석:");
-       SeatLabel.setBounds(300,120,180,30);
+       SeatLabel.setBounds(370,200,180,30);
        SeatLabel.setFont(mfont);
-       
-       JLabel SeatNum = new JLabel(Integer.toString(Seat3.SeatNum)+ "번");
-       SeatNum.setBounds(470, 120, 150, 30);
-       SeatNum.setFont(mfont);
+
+       for(int i = 0; i< selectedSeats.size();i++) {
+           JLabel SeatNum = new JLabel(Integer.toString(selectedSeats.get(i)));
+           SeatNum.setBounds(520 + 50*i, 200, 150, 30);
+           SeatNum.setFont(mfont);
+           frame.add(SeatNum);
+    	   
+       }
        
 	        JButton button = new JButton("확인");
-	        button.setBounds(230,160, 140, 50);
+	        button.setBounds(330,300, 140, 50);
 	        button.setFont(font);
 	        button.addActionListener(new ActionListener() {
 	            public void actionPerformed (ActionEvent e) {
@@ -486,17 +541,34 @@ class Complete extends JFrame{
 	                } 
 	            }
 	            });
+	        frame.addWindowListener(new WindowAdapter() {
+	            @Override
+	            public void windowClosing(WindowEvent e) {
+	                // 창을 닫는 기능 구현 (원하는 작업 수행)
+	                Window[] windows = Window.getWindows();
+	                for (Window window : windows) {
+	                    if (window instanceof JFrame && !(window instanceof Home)) {
+	                        window.dispose();
+	                    }
+	                    // 창을 닫을 때 Home 창을 제외한 모든 창을 닫음
+	                }
+	            }
+	        });
+
 	        frame.add(warningsign);
 	        frame.add(message);
 	        frame.add(ReserveNum);
 	        frame.add(button);
-	        frame.setSize(550, 250);
-	        frame.setLocationRelativeTo(null);
 	        frame.add(AreaLabel);
 	        frame.add(AreaNum);
 	        frame.add(SeatLabel);
-	        frame.add(SeatNum);	        
+	        frame.add(Price);
+	        frame.setSize(800, 400);
+	        frame.setLocationRelativeTo(null);
+	                
 			frame.setVisible(true);
+			SeatPrice = 0;
+			count = 0;
 		}
 	
 }

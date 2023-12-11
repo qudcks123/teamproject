@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Seat extends JFrame {
+public class Check extends JFrame {
    final static int NUM_BUTTONS = 12;
    final static int NUM_SEATS = 100;
    
@@ -21,11 +21,12 @@ public class Seat extends JFrame {
    public static String [] SeatType;
    JPanel[][] daytimecp = new JPanel[31][3]; 
    
-   public Seat() {
+   public Check() {
       setTitle("프방탄소년단 티켓");
       cp = getContentPane();
 
       SeatType = new String[NUM_BUTTONS];
+   
 
       
       createToolBarRight();
@@ -40,7 +41,7 @@ public class Seat extends JFrame {
       uppertoolBar.setFloatable(false);
       uppertoolBar.setBackground(Color.LIGHT_GRAY);
       
-      uppertoolBar.add(new JLabel(new ImageIcon("ImageFiles/leftest.jpg")));
+      uppertoolBar.add(new JLabel(new ImageIcon("ImageFiles/leftest2.jpg")));
       uppertoolBar.addSeparator();
       uppertoolBar.add(new JLabel("프방탄소년단 2023 Concert in SeoulTech -창학관 326호-"));
       uppertoolBar.add(Box.createHorizontalStrut(10));
@@ -48,30 +49,25 @@ public class Seat extends JFrame {
       cp.add(uppertoolBar,BorderLayout.NORTH);
       
    }
-
    
+ 
    private void createToolBarRight() {
       JToolBar righttoolBar = new JToolBar();
       righttoolBar.setFloatable(false);
       righttoolBar.setOrientation(SwingConstants.VERTICAL);
       righttoolBar.setBackground(Color.LIGHT_GRAY);
       
-
-      finish = new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG"));
+     
       prior = new JButton("이전단계");
-      retry = new JButton("좌석다시선택");
 
       righttoolBar.addSeparator();
       righttoolBar.add(new JLabel("좌석등급 / 가격"));
       righttoolBar.add(new JLabel(new ImageIcon("ImageFiles/좌석타입.jpg")));
-      righttoolBar.addSeparator();
-      righttoolBar.add(new JLabel("선택좌석"));
+      righttoolBar.addSeparator();   
       righttoolBar.add(new JLabel());
-      righttoolBar.add(finish);
+
       righttoolBar.add(prior);
-      righttoolBar.add(retry);
-      
-      finish.addActionListener(new finishActionListener());
+
       prior.addActionListener(new priorActionListener());
       //retry.addActionListener(new retryActionListener());
       
@@ -89,17 +85,7 @@ public class Seat extends JFrame {
       
    }
   
-   
-   private class finishActionListener implements ActionListener{
 
-      @Override
-      public void actionPerformed(ActionEvent e) {
-         // TODO Auto-generated method stub
-         JButton b = (JButton) e.getSource();
-      }
-      
-   }   
-   
    static JPanel createPanel() {
        JPanel panel = new JPanel();
        return panel;
@@ -210,13 +196,13 @@ public class Seat extends JFrame {
              btn[i].addActionListener(new btnActionListener());
              if(i == 1 || i == 2 || i == 5 || i == 6 )
              {
-                btn[i].setBackground(Color.GREEN);
+                btn[i].setBackground(Color.CYAN);
                 SeatType[i] = "V";
                 
              }
              else if(i == 0 || i == 3 || i == 4 || i == 7|| i == 9 || i == 10)
              {
-                btn[i].setBackground(Color.CYAN);
+                btn[i].setBackground(Color.GREEN);
                 SeatType [i] = "R";
              }
              else if(i == 8 || i == 11)
@@ -239,7 +225,7 @@ public class Seat extends JFrame {
     	  JButton b = (JButton) e.getSource();
 			Areanum= Integer.parseInt(b.getText());		 // SeatType[Areanum-1] 하면 되겠다.
 		// 그럼 area[10] = 11; 이라고 치면 
-			new Seat3();			
+			new Check3();			
 			}
 		}
    /*

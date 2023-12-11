@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-
-public class Store {
+import java.io.*;
+public class Store implements Serializable{
    String name;
    String tel;
    int reseve;
@@ -13,14 +13,14 @@ public class Store {
    int Areanum;
    String birthday;
    int ReNum;
-   static ArrayList<Store> seat = new ArrayList<>();
 
-   public Store(int d, String t, int an,  String st, int sn) {
+   public Store(int d, String t, int an,  String st, int sn, int rn) {
       this.date = d;
       this.time = t;
       this.Areanum = an;
       this.seattype = st;
       this.seatnum = sn;
+      this.ReNum = rn;
    }
    
    public Store(String n, String tel, String m, String s, String b, int rn) {

@@ -1,11 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
 import java.io.*;
 
-public class Seat3 extends JFrame implements Serializable{
+public class Check3 extends JFrame implements Serializable{
 	final static int NUM_BUTTONS =13;
 	   final static int NUM_SEATS = 80;
 	   private Container cp;
@@ -16,8 +15,7 @@ public class Seat3 extends JFrame implements Serializable{
 	   private JLabel intro, selectedseat1, selectedseat2, selectedseat3, selectedseat4;  // 우측 콤보박스에 선택된 좌석 선택한 거 
 	   private JLabel[] row, selectedSeats;
 	   private JButton retry, prior, finish;
-	   static int currentSeatIndex;
-
+	   private int currentSeatIndex;
 	   public String [] time = {"14:30", "19:30", "--------"};
 	   public int [] [] beforeSelectedSeats; //?
 	   public static ArrayList<Integer> SeatNumArr = new ArrayList<>();
@@ -28,16 +26,13 @@ public class Seat3 extends JFrame implements Serializable{
 	   int  size,b;
    
    
-   public Seat3() {
+   public Check3() {
       setTitle("프방탄소년단 티켓");
       cp = getContentPane();
 
 
-      beforeSelectedSeats = new int[NUM_BUTTONS][NUM_SEATS];
-            
-
-      
-      
+      beforeSelectedSeats = new int[NUM_BUTTONS][NUM_SEATS]; 
+                
        selectedseat1 = new JLabel();
        selectedseat2 = new JLabel();
        selectedseat3 = new JLabel();
@@ -49,9 +44,9 @@ public class Seat3 extends JFrame implements Serializable{
        finish = new JButton(new ImageIcon("ImageFiles/좌석선택완료.PNG"));
       btnseat = new JButton[NUM_SEATS];
       row = new JLabel[NUM_SEATS/10];
-      createToolBarRight();
-      createToolBarUpper();
-      createSeatplacement();
+      createToolBarRight(); // 화면 우측 툴바
+      createToolBarUpper(); // 화면 상단 툴바
+      createSeatplacement(); // 좌석 출력 
       setSize(1100,800);
       setVisible(true);
      
@@ -63,49 +58,40 @@ public class Seat3 extends JFrame implements Serializable{
       uppertoolBar.setBackground(Color.LIGHT_GRAY);
       
       
-      uppertoolBar.add(new JLabel(new ImageIcon("ImageFiles/leftest.jpg")));
+      uppertoolBar.add(new JLabel(new ImageIcon("ImageFiles/leftest2.jpg")));
       uppertoolBar.addSeparator();
-      uppertoolBar.add(new JLabel("프방탄소년단 2023 Concert in SeoulTech -창학관 326호-"));
+      uppertoolBar.add(new JLabel("프방탄소년단 2023 Concert in SeoulTech -창학관 326호-우-"));
       uppertoolBar.add(Box.createHorizontalStrut(10));
-
+      // 
       cp.add(uppertoolBar,BorderLayout.NORTH);
 
    }
+   
 
+
+   
    private void createToolBarRight() {
       righttoolBar = new JToolBar();
       righttoolBar.setFloatable(false);
       righttoolBar.setOrientation(SwingConstants.VERTICAL);
       righttoolBar.setBackground(Color.LIGHT_GRAY);
-      
-      
-      
-
+                  
       righttoolBar.addSeparator();
       righttoolBar.add(new JLabel("좌석등급 / 가격"));
       righttoolBar.add(new JLabel(new ImageIcon("ImageFiles/좌석타입.jpg")));
       righttoolBar.addSeparator();
-      righttoolBar.add(new JLabel("선택좌석"));
-      righttoolBar.add(selectedseat1);
-      righttoolBar.add(selectedseat2);
-      righttoolBar.add(selectedseat3);
-      righttoolBar.add(selectedseat4); // 1,2,3,4는 선택된 좌석
-      righttoolBar.add(finish);
       righttoolBar.add(prior);
-      righttoolBar.add(retry);
-      
+
       prior.addActionListener(new priorActionListener());
-      retry.addActionListener(new retryActionListener());
-      finish.addActionListener(new finishActionListener());
       
       cp.add(righttoolBar,BorderLayout.EAST);
    }
 
    private void createSeatplacement() {
 	   JPanel[] [] [] AreaSeatnumcp = new JPanel[31] [2][12] ;
-	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1] = Seat.createPanel();
-	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1].setLayout(new BorderLayout());
-	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1].setBackground(Color.BLACK);
+	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1] = Seat.createPanel();
+	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1].setLayout(new BorderLayout());
+	      AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1].setBackground(Color.BLACK);
 	   
       // 그리드 레이아웃 사용
         seatPanel1 = new JPanel(new GridLayout(0, 10)); // 0은 행을 자동으로 조절. 좌석 1부터 100까지
@@ -120,7 +106,6 @@ public class Seat3 extends JFrame implements Serializable{
             btnseat[i-1].setForeground(Color.WHITE);
             btnseat[i-1].setBackground(Color.BLACK);
             seatPanel1.add(btnseat[i-1]);
-            btnseat[i-1].addActionListener(new seatActionListener());
         }
         
         for (int j = 0; j < NUM_SEATS / 10; j++) {
@@ -131,14 +116,14 @@ public class Seat3 extends JFrame implements Serializable{
             row[j].setHorizontalAlignment(SwingConstants.CENTER);
         }
         
-        intro = new JLabel(Seat.Areanum + "구역의 좌석배치도입니다.");
+        intro = new JLabel(Check.Areanum + "구역의 좌석배치도입니다.");
         seatPanel3.add(intro);
         
-        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1].add(seatPanel3, BorderLayout.NORTH);
-        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1].add(seatPanel2, BorderLayout.WEST);
-        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1].add(seatPanel1, BorderLayout.CENTER);
+        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1].add(seatPanel3, BorderLayout.NORTH);
+        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1].add(seatPanel2, BorderLayout.WEST);
+        AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1].add(seatPanel1, BorderLayout.CENTER);
         
-        cp.add(AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Seat.Areanum-1], BorderLayout.CENTER);
+        cp.add(AreaSeatnumcp[Calendar.daynumminus][Calendar.performtime][Check.Areanum-1], BorderLayout.CENTER);
         
         for(b=0; b<s.size(); b++)
         {
@@ -163,7 +148,7 @@ public class Seat3 extends JFrame implements Serializable{
             	for(int l=0; l<s.size(); l++)
             	{	
             					
-            		if(s.get(l).date == Calendar.dayNum && s.get(l).time.equals(Calendar.concertTime) && s.get(l).Areanum == Seat.Areanum) 
+            		if(s.get(l).date == Calendar.dayNum && s.get(l).time.equals(Calendar.concertTime) && s.get(l).Areanum == Check.Areanum) 
             		{
             			if(i ==s.get(l).seatnum) 
             			{
@@ -180,8 +165,7 @@ public class Seat3 extends JFrame implements Serializable{
         			btnseat[i-1] = new JButton("" + i);
         			btnseat[i-1].setForeground(Color.WHITE);
         			btnseat[i-1].setBackground(Color.BLACK);
-        			seatPanel1.add(btnseat[i-1]);
-        			btnseat[i-1].addActionListener(new seatActionListener()); // 예약 안 된 좌석
+        			seatPanel1.add(btnseat[i-1]);// 예약 안 된 좌석
             	}else if(m==1)
             		m=0;
             		continue;
@@ -189,27 +173,7 @@ public class Seat3 extends JFrame implements Serializable{
         }
    }
    }  
-   private class seatActionListener implements ActionListener { // 선택 좌석을 총 4개까지 제한하는 코드
-       @Override
-       public void actionPerformed(ActionEvent e) {
-           JButton b = (JButton) e.getSource();
 
-           if(SeatNumArr.size()<=4) {
-			SeatNumArr.add(Integer.parseInt(b.getText()));
- 		    SeatNumint = Integer.parseInt(b.getText());
-           
-        	   if (currentSeatIndex < selectedSeats.length) {
-               // 아직 모든 좌석이 갱신되지 않은 경우에만 갱신
-        		   if(beforeSelectedSeats[Seat.Areanum][SeatNumint-1]!=SeatNumint){
-        			   String newText = selectedSeats[currentSeatIndex].getText() + (SeatNumint/10 + 1) +"열 " +SeatNumint; // ~~열 [좌석번호],, 그럼 나는 b.getText()로 번호만 받아가면 되겠다.
-        			   beforeSelectedSeats[Seat.Areanum][SeatNumint-1] = SeatNumint; // 예약완료 전 좌석 번호를 받아 임시로 저장하는 버퍼 역할 
-        			   selectedSeats[currentSeatIndex].setText(newText); // ~~열 [좌석번호]를 selectedSeats 어레이어 저장 
-        			   currentSeatIndex++;
-        		   
-           } // 모든 좌석이 갱신되면 더 이상의 갱신을 방지
-       }}
-       }
-   }
    private class priorActionListener implements ActionListener{ 
 
 	      @Override
@@ -227,56 +191,5 @@ public class Seat3 extends JFrame implements Serializable{
 	      }      
 	   }
   
-   private class retryActionListener implements ActionListener{ //이거 수정 필요
-
-	      @Override
-	      public void actionPerformed(ActionEvent e) {
-	         // TODO Auto-generated method stub
-	            for (JLabel seatLabel : selectedSeats) {
-	               seatLabel.setText("");
-	            }
-	            SeatNumArr.clear();
-	    	  for (int i = 0; i < NUM_BUTTONS; i++) {
-	    		    for (int j = 0; j < NUM_SEATS; j++) {
-	    		        beforeSelectedSeats[i][j] = 0;
-	    		    }
-	    		}
-	    	  
-	            // currentSeatIndex 초기화
-	            currentSeatIndex = 0;
-	      }      
-	   }
    
-   private class finishActionListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-
-	           for(int j=0; j<SeatNumArr.size(); j++)
-	           {	
-	        	   Store d = new Store(Calendar.dayNum, Calendar.concertTime, Seat.Areanum ,Seat.SeatType[Seat.Areanum-1], SeatNumArr.get(j),Reserve.ReserveNumber + 1);			
-	   				s.add(d);
-	           }
-	           
-			
- 			//	Info.Information(s, "InformSeat1");
-	    	  for (int i = 0; i < NUM_BUTTONS; i++) {
-	    		    for (int j = 0; j < NUM_SEATS; j++) {
-	    		        beforeSelectedSeats[i][j] = 0;
-	    		    }
-	    		}
-	    	
-	    	  if(SeatNumArr.size()==0) {
-	    		  new ErrorMessage("좌석을 선택하세요.");
-	    	  }
-	    	  else {
-			new Reserve();
-	    	  }
-			//SeatNumArr.removeAll(SeatNumArr);
-		}
-		
-	}
-  
-
 }

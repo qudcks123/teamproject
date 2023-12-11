@@ -2,13 +2,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
-public class Home extends JFrame {
+import java.io.*;
+public class Home extends JFrame implements Serializable{
     private MyPanel panel = new MyPanel();
-    private String member;
     private JFrame imageFrame = new JFrame();
     private JLabel imageLabel = new JLabel();
-    
+    static int selectmenu;
     public Home() {
        //폰트랑 글자 크기
        Font font = new Font("고딕체", Font.BOLD, 20);
@@ -52,16 +51,16 @@ public class Home extends JFrame {
         c.add(종료);
         
         //버튼에 대한 좌표랑 크기 설정
-        예약.setBounds(230, 230, 150, 70);
-        조회.setBounds(230, 325, 150, 70);
-        취소.setBounds(230, 420, 150, 70);
-        종료.setBounds(230, 515, 150, 70);
+        예약.setBounds(190, 230, 150, 70);
+        조회.setBounds(190, 325, 150, 70);
+        취소.setBounds(190, 420, 150, 70);
+        종료.setBounds(190, 515, 150, 70);
 
         //각 버튼에 대한 마우스 이벤트 설정
         예약.addMouseListener(new MouseAdapter() {
             
             public void mouseEntered(MouseEvent e) {
-                showImage("고버스터","images/고버스터.jpg");
+                    showImage("고버스터","images/고버스터.jpg");
             }
 
             
@@ -73,14 +72,16 @@ public class Home extends JFrame {
         예약.addActionListener(new ActionListener() {
             
             public void actionPerformed(ActionEvent e) {
-                new Calendar();
-            }
+            	selectmenu = 1;
+            	new Calendar();             
+            }     
         });
         
         조회.addMouseListener(new MouseAdapter() {
             
             public void mouseEntered(MouseEvent e) {
                 showImage("뒤","images/뒤.jpg");
+            	
             }
 
             public void mouseExited(MouseEvent e) {
@@ -92,6 +93,7 @@ public class Home extends JFrame {
             
             public void mouseEntered(MouseEvent e) {
                 showImage("제이보","images/제이보.jpg");
+            
             }
 
             
@@ -111,8 +113,16 @@ public class Home extends JFrame {
                 hideImage();
             }
         });
-        취소.addActionListener(new ActionListener() {
+        조회.addActionListener(new ActionListener() {
             //버튼이 클릭되면 Cancel 클래스의 새 인스턴스 생성
+            public void actionPerformed(ActionEvent e) {
+            	selectmenu = 2;
+                new Calendar();              
+            	}
+            
+        });
+        
+        취소.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Cancel();
             }
